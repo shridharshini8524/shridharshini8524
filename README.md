@@ -1,12 +1,10 @@
 ```
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.impute import SimpleImputer
 
 # Load data with error handling
 try:
@@ -22,8 +20,7 @@ print(data.head())
 # Check for missing values
 if data.isnull().sum().any():
     print("Warning: Missing values detected. Filling with column mean.")
-    imputer = SimpleImputer(strategy='mean')
-    data.iloc[:, :] = imputer.fit_transform(data)
+    data.fillna(data.mean(), inplace=True)
 
 # Verify column names
 expected_columns = {'rainfall', 'temperature', 'humidity', 'yield'}
@@ -57,26 +54,9 @@ y_pred = model.predict(X_test)
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 
-# Display Evaluation Metrics
-print(f"Mean Squared Error (MSE): {mse:.4f}")
-print(f"R-squared (R²) Score: {r2:.4f}")
-
-# Visualization: Actual vs Predicted
-plt.figure(figsize=(8, 6))
-plt.scatter(y_test, y_pred, color='blue', alpha=0.6)
-plt.plot([y.min(), y.max()], [y.min(), y.max()], linestyle='--', color='red')  # Ideal prediction line
-plt.xlabel("Actual Yield")
-plt.ylabel("Predicted Yield")
-plt.title("Actual vs Predicted Crop Yield")
-plt.show()
-
-# Residual Plot
-residuals = y_test - y_pred
-plt.figure(figsize=(8, 6))
-plt.scatter(y_pred, residuals, color='green', alpha=0.6)
-plt.axhline(y=0, color='red', linestyle='--')
-plt.xlabel("Predicted Yield")
-plt.ylabel("Residuals")
-plt.title("Residual Plot")
-plt.show()
+# Display Results
+print(f"Mean Squared Error (MSE): {mse}")
+print(f"R² Score: {r2}")
+print("Coefficients:", model.coef_)
+print("Intercept:", model.intercept_)
 ```
