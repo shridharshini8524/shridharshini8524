@@ -1,3 +1,4 @@
+```
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -78,3 +79,4 @@ plt.xlabel("Predicted Yield")
 plt.ylabel("Residuals")
 plt.title("Residual Plot")
 plt.show()
+```
